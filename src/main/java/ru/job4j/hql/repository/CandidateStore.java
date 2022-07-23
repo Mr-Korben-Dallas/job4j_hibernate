@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import ru.job4j.hql.model.Candidate;
 
+import java.util.List;
+
 public class CandidateStore {
     public Candidate persist(Candidate candidate, SessionFactory sf) {
         Session session = sf.openSession();
@@ -26,15 +28,15 @@ public class CandidateStore {
         return candidate;
     }
 
-    public Candidate findByName(String name, SessionFactory sf) {
+    public List<Candidate> findByName(String name, SessionFactory sf) {
         Session session = sf.openSession();
         session.beginTransaction();
         Query<Candidate> query = session.createQuery("from Candidate c where c.name = :name", Candidate.class);
         query.setParameter("name", name);
-        Candidate candidate = query.uniqueResult();
+        List<Candidate> candidateList = query.list();
         session.getTransaction().commit();
         session.close();
-        return candidate;
+        return candidateList;
     }
 
     public int update(Candidate candidate, SessionFactory sf) {

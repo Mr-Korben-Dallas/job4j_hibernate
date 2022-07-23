@@ -9,6 +9,8 @@ import ru.job4j.hql.model.Candidate;
 import ru.job4j.hql.repository.CandidateStore;
 import ru.job4j.hql.service.CandidateService;
 
+import java.util.List;
+
 @Log4j2
 public class HibernateRunner {
     private static final CandidateService CANDIDATESERVICE = new CandidateService(new CandidateStore());
@@ -30,12 +32,12 @@ public class HibernateRunner {
             CANDIDATESERVICE.update(createdFirstCandidate, sf);
             CANDIDATESERVICE.update(createdSecondCandidate, sf);
             CANDIDATESERVICE.update(createdThirdCandidate, sf);
-            Candidate firstByName = CANDIDATESERVICE.findByName("createdFirstCandidate", sf);
-            Candidate secondByName = CANDIDATESERVICE.findByName("createdSecondCandidate", sf);
-            Candidate thirdByName = CANDIDATESERVICE.findByName("createdThirdCandidate", sf);
-            Candidate firstById = CANDIDATESERVICE.findById(firstByName.getId(), sf);
-            Candidate secondById = CANDIDATESERVICE.findById(secondByName.getId(), sf);
-            Candidate thirdById = CANDIDATESERVICE.findById(thirdByName.getId(), sf);
+            List<Candidate> listByFirstName = CANDIDATESERVICE.findByName("createdFirstCandidate", sf);
+            List<Candidate> listBySecondByName = CANDIDATESERVICE.findByName("createdSecondCandidate", sf);
+            List<Candidate> listBythirdByName = CANDIDATESERVICE.findByName("createdThirdCandidate", sf);
+            Candidate firstById = CANDIDATESERVICE.findById(listByFirstName.get(0).getId(), sf);
+            Candidate secondById = CANDIDATESERVICE.findById(listBySecondByName.get(0).getId(), sf);
+            Candidate thirdById = CANDIDATESERVICE.findById(listBythirdByName.get(0).getId(), sf);
             int result = CANDIDATESERVICE.delete(firstById.getId(), sf);
             System.out.println(result);
             result = CANDIDATESERVICE.delete(secondById.getId(), sf);

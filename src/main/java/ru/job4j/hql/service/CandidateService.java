@@ -4,6 +4,8 @@ import org.hibernate.SessionFactory;
 import ru.job4j.hql.model.Candidate;
 import ru.job4j.hql.repository.CandidateStore;
 
+import java.util.List;
+
 public class CandidateService {
     private final CandidateStore store;
 
@@ -19,7 +21,7 @@ public class CandidateService {
         return store.findById(id, sf);
     }
 
-    public Candidate findByName(String name, SessionFactory sf) {
+    public List<Candidate> findByName(String name, SessionFactory sf) {
         return store.findByName(name, sf);
     }
 
