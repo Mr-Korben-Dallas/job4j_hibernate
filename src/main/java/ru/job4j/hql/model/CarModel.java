@@ -11,12 +11,20 @@ public class CarModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "car_brand_id")
+    private CarBrand carBrand;
 
     public CarModel() {
     }
 
     public CarModel(String name) {
         this.name = name;
+    }
+
+    public CarModel(String name, CarBrand carBrand) {
+        this.name = name;
+        this.carBrand = carBrand;
     }
 
     public Long getId() {
@@ -35,6 +43,14 @@ public class CarModel {
         this.name = name;
     }
 
+    public CarBrand getCarBrand() {
+        return carBrand;
+    }
+
+    public void setCarBrand(CarBrand carBrand) {
+        this.carBrand = carBrand;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -50,5 +66,16 @@ public class CarModel {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Brand{"
+                + "id="
+                + id
+                + ", name='"
+                + name
+                + '\''
+                + '}';
     }
 }

@@ -13,7 +13,7 @@ public class CarBrand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(/*cascade = CascadeType.ALL, orphanRemoval = true, */mappedBy = "carBrand")
     private List<CarModel> cars = new ArrayList<>();
 
     public CarBrand() {
@@ -66,5 +66,16 @@ public class CarBrand {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Brand{"
+                + "id="
+                + id
+                + ", name='"
+                + name
+                + '\''
+                + '}';
     }
 }

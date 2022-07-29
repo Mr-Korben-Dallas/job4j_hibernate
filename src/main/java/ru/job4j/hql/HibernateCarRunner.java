@@ -9,38 +9,40 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.hql.model.CarBrand;
 import ru.job4j.hql.model.CarModel;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.query.Query;
+
 @Log4j2
 public class HibernateCarRunner {
     public static void main(String[] args) {
+        List<CarBrand> result = new ArrayList<>();
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure().build();
         try {
             SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             Session session = sf.openSession();
             session.beginTransaction();
-            CarModel carModel1 = new CarModel("Sport model");
-            CarModel carModel2 = new CarModel("Free road model");
-            CarModel carModel3 = new CarModel("Free road model 2");
-            CarModel carModel4 = new CarModel("Free road model 3");
-            CarModel carModel5 = new CarModel("Free road model 4");
+            CarBrand carBrand = new CarBrand("Ford");
+            session.persist(carBrand);
+            CarModel carModel1 = new CarModel("Sport model", carBrand);
+            CarModel carModel2 = new CarModel("Free road model", carBrand);
+            CarModel carModel3 = new CarModel("Free road model 2", carBrand);
             session.persist(carModel1);
             session.persist(carModel2);
             session.persist(carModel3);
-            session.persist(carModel4);
-            session.persist(carModel5);
-            CarBrand carBrand = new CarBrand("Ford");
-            carBrand.addCar(session.get(CarModel.class, carModel1.getId()));
-            carBrand.addCar(session.get(CarModel.class, carModel2.getId()));
-            carBrand.addCar(session.get(CarModel.class, carModel3.getId()));
-            carBrand.addCar(session.get(CarModel.class, carModel4.getId()));
-            carBrand.addCar(session.get(CarModel.class, carModel5.getId()));
-            session.persist(carBrand);
+            Query<CarBrand> query = session.createQuery("select distinct c from CarBrand c join fetch c.cars", CarBrand.class);
+            result = query.list();
             session.getTransaction().commit();
             session.close();
         }  catch (Exception e) {
             log.error("Error in main", e);
         } finally {
             StandardServiceRegistryBuilder.destroy(registry);
+        }
+
+        for (CarModel carModel: result.get(0).getCars()) {
+            System.out.println(carModel);
         }
     }
 }
