@@ -32,7 +32,6 @@ class OrderServiceTest {
             sessionFactory = metadata
                     .getSessionFactoryBuilder().build();
             orderService = new OrderService(new OrderStore(sessionFactory));
-
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
@@ -107,7 +106,6 @@ class OrderServiceTest {
 
     @AfterEach
     public void wipeOrderTable() {
-        //  TRUNCATE TABLE T RESTART IDENTITY AND COMMIT NO CHECK
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.createNativeQuery("TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK").executeUpdate();
