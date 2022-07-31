@@ -2,6 +2,7 @@ package ru.job4j.hql.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import jakarta.persistence.Tuple;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -106,6 +107,7 @@ class OrderServiceTest {
 
     @AfterEach
     public void wipeOrderTable() {
+        //  TRUNCATE TABLE T RESTART IDENTITY AND COMMIT NO CHECK
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.createNativeQuery("TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK").executeUpdate();
